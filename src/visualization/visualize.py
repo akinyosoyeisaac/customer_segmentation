@@ -1,9 +1,8 @@
 # importing the neccessary labraries
 import pandas as pd
 import yaml
+import argparse
 from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
-from sklearn.decomposition import KernelPCA
 import json
 import pickle as pk
 import matplotlib.pyplot as plt
@@ -46,9 +45,9 @@ def cluster_center(model, config, X_kpca):
     plt.xlabel("KPCA1", size=15, weight="bold")
     plt.savefig(config["report"]["visual"]["cluster_center"]);
 
-def visualization():
+def visualization(config_file:str):
     # loading of configuration files
-    with open("params.yaml") as file:
+    with open(config_file) as file:
         config = yaml.safe_load(file)
 
 
@@ -74,6 +73,9 @@ def visualization():
     cluster_center(model_vis, config, X_kpca)
 
 if __name__ == "__main__":
-    visualization()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", "--p", dest = "path", type=str, required=True)
+    args = parser.parse_args()
+    visualization(args.path)
 
 

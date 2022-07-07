@@ -1,14 +1,15 @@
 import pandas as pd
+import argparse
 import yaml
 import json
 from sklearn.cluster import KMeans
 import pickle as pk
 
 
-def training():
+def training(config_path:str):
 
     # loading of configuration files
-    with open("params.yaml") as file:
+    with open(config_path) as file:
         config = yaml.safe_load(file)
 
     # loading the featurized data 
@@ -34,5 +35,8 @@ def training():
         pk.dump(model, file)
 
 if __name__ == "__main__":
-    training()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", "--p", dest = "path", type=str, required=True)
+    args = parser.parse_args()
+    training(args.path)
 

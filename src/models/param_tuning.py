@@ -1,5 +1,6 @@
 import pandas as pd
 import yaml
+import argparse
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import KernelPCA
@@ -26,8 +27,8 @@ def n_cluster_visual(path: str, y, config):
     plt.savefig(path);
 
 
-def param_tunning():
-    with open("params.yaml") as file:
+def param_tunning(file_path:str):
+    with open(file_path) as file:
         config = yaml.safe_load(file)
 
     df = pd.read_csv(config["data_loader"]["processed_data"])
@@ -58,4 +59,7 @@ def param_tunning():
     n_cluster_visual(config["report"]["visual"]["no_clustersvssilhouette"], y=silhouette_scores, config=config)
     
 if __name__ == "__main__":
-    param_tunning()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", "--p", dest = "path", type=str, required=True)
+    args = parser.parse_args()
+    param_tunning(args.path)

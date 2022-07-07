@@ -7,3 +7,46 @@ stages:
     - data_loader
     outs:
     - data/processed/processed_data.csv
+  hyperparameter_tunning:
+    cmd: python src\models\param_tuning.py --path=params.yaml
+    deps: 
+    - src\models\param_tuning.py
+    - data\processed\processed_data.csv
+    params:
+    - train 
+    - data_loader 
+    - random_state
+    - report    
+    outs:
+    - reports\figures\no_Clusters_vs_Inertia.jpg
+    - reports\figures\no_Clusters_vs_silhouette.jpg 
+    - data\processed\X_kpca.pk
+    - reports\metrics\hyperpam_metrics.json
+  training:
+    cmd: python src\models\train_model.py --path=params.yaml
+    deps: 
+    - src\models\train_model.py
+    - data\processed\processed_data.csv
+    params:
+    - train 
+    - data_loader 
+    - random_state
+    - report    
+    outs:
+    - reports\metrics\feature_importance.json
+    - models\model.pk
+  visualization:
+    cmd: python src\visualization\visualize.py --path=params.yaml
+    deps: 
+    - src\visualization\visualize.py
+    - data\processed\processed_data.csv
+    - reports\metrics\feature_importance.json
+    - data\processed\X_kpca.pk
+    params:
+    - train 
+    - data_loader 
+    - random_state
+    - report    
+    outs:
+    - reports\figures\feature_importance.jpg
+    - reports\figures\cluster_center_2D.jpg
