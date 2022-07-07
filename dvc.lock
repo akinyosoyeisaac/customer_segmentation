@@ -99,3 +99,47 @@ stages:
     - path: reports\metrics\feature_importance.json
       md5: cd54800c3b2660ea2f5f372adb82f0b3
       size: 703
+  visualization:
+    cmd: python src\visualization\visualize.py --path=params.yaml
+    deps:
+    - path: data\processed\X_kpca.pk
+      md5: 1ba9fb5e0828176f342990376f5edecc
+      size: 143362
+    - path: data\processed\processed_data.csv
+      md5: 891ec9c44bb840b872302e2c7993d481
+      size: 2973830
+    - path: reports\metrics\feature_importance.json
+      md5: cd54800c3b2660ea2f5f372adb82f0b3
+      size: 703
+    - path: src\visualization\visualize.py
+      md5: 82b48c39e82245a2ab41f0345976512d
+      size: 2932
+    params:
+      params.yaml:
+        data_loader:
+          raw_data: data/raw/CC GENERAL.csv
+          processed_data: data/processed/processed_data.csv
+          metadata: docs/metadata.json
+          X_kpca: data/processed/X_kpca.pk
+        random_state: 234
+        report:
+          metrics:
+            hyper_metrics: reports/metrics/hyperpam_metrics.json
+            feature_importance: reports/metrics/feature_importance.json
+          visual:
+            no_clustersvsinertia: reports/figures/no_Clusters_vs_Inertia.jpg
+            no_clustersvssilhouette: reports/figures/no_Clusters_vs_silhouette.jpg
+            feature_importance: reports/figures/feature_importance.jpg
+            cluster_center: reports/figures/cluster_center_2D.jpg
+        train:
+          n_cluster_range: 17
+          n_cluster: 5
+          model: models/model.pk
+          n_impt_feat: 10
+    outs:
+    - path: reports\figures\cluster_center_2D.jpg
+      md5: 7d3e499417a52b30a80067e857e8d1a1
+      size: 174527
+    - path: reports\figures\feature_importance.jpg
+      md5: ba430b7d41fc66ce2f2db09bc3382996
+      size: 90985
