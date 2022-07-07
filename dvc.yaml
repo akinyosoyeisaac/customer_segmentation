@@ -1,0 +1,9 @@
+stages:
+  build_feature:
+    cmd: python src/features/build_features.py --path=params.yaml
+    deps:
+    - src/features/build_features.py
+    params:
+    - data_loader
+    outs:
+    - data/processed/processed_data.csv
