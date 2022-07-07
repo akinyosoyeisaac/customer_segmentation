@@ -61,3 +61,41 @@ stages:
     - path: reports\metrics\hyperpam_metrics.json
       md5: f0f00d18bf9d2e10ee5934e3da366427
       size: 641
+  training:
+    cmd: python src\models\train_model.py --path=params.yaml
+    deps:
+    - path: data\processed\processed_data.csv
+      md5: 891ec9c44bb840b872302e2c7993d481
+      size: 2973830
+    - path: src\models\train_model.py
+      md5: 275ad4febeced982b39d4f040f1d0ddb
+      size: 1359
+    params:
+      params.yaml:
+        data_loader:
+          raw_data: data/raw/CC GENERAL.csv
+          processed_data: data/processed/processed_data.csv
+          metadata: docs/metadata.json
+          X_kpca: data/processed/X_kpca.pk
+        random_state: 234
+        report:
+          metrics:
+            hyper_metrics: reports/metrics/hyperpam_metrics.json
+            feature_importance: reports/metrics/feature_importance.json
+          visual:
+            no_clustersvsinertia: reports/figures/no_Clusters_vs_Inertia.jpg
+            no_clustersvssilhouette: reports/figures/no_Clusters_vs_silhouette.jpg
+            feature_importance: reports/figures/feature_importance.jpg
+            cluster_center: reports/figures/cluster_center_2D.jpg
+        train:
+          n_cluster_range: 17
+          n_cluster: 5
+          model: models/model.pk
+          n_impt_feat: 10
+    outs:
+    - path: models\model.pk
+      md5: 64121412d5dac4e3193a19ed715492c8
+      size: 37084
+    - path: reports\metrics\feature_importance.json
+      md5: cd54800c3b2660ea2f5f372adb82f0b3
+      size: 703

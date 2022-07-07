@@ -18,8 +18,9 @@ def feature_impt(cluster_centers, config):
 
     output: jpeg of the barplot showing the feature importance in an ascending order
     """
+    mean_cluster_center = pd.Series(cluster_centers).sort_values(ascending=False)
     plt.figure(figsize=(10,8))
-    cluster_centers[:config["train"]["n_impt_feat"]].plot.bar()
+    mean_cluster_center[:config["train"]["n_impt_feat"]].plot.bar()
     plt.xticks(rotation=90)
     plt.xlabel("LABELS", size=15, weight="bold")
     plt.ylabel("FEATURE IMPORTANCES", size=15, weight="bold")
