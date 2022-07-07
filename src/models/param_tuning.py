@@ -9,7 +9,7 @@ import pickle as pk
 import matplotlib.pyplot as plt
 plt.style.use("seaborn-dark")
 
-from src.logs import get_logger
+from src.log import get_logger
 
 
 
