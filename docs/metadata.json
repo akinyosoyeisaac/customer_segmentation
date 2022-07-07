@@ -1,0 +1,20 @@
+{
+    "CUSTID": "Identification of credit card holder",
+    "BALANCE": "Balance amount left in their account to make purchase",
+    "BALANCEFREQUENCY": "How frequently the balance is updated, score between 0 and 1 (1= frequently updated, 0 =not frequently updated)",
+    "PURCHASES": "Amounts of purchases made from account",
+    "ONEOFFPURCHASES": "Maximum purchase amount done in one-go",
+    "INSTALLMENTSPURCHASES": "Amount of purchase done in installment",
+    "CASHADVANCE": "Cash in advance given by the user",
+    "PURCHASESFREQUENCY": "How frequently the purchases are being made, score between 0 and 1 (1 = frequently pruchased 0=not frequently purchased)",
+    "ONEOFFPURCHASESFREQUENCY": "How frequently purchases are happening in one-go (1 = frequently pruchased 0=not frequently purchased)",
+    "PURCHASESINSTALLMENTSFREQUENCY": "How frequently purchased in installments are being done (1 = frequently done, 0 = not frequently)",
+    "CASHADVANCEFREQUENCY": "How frequently the cash in advance being paid",
+    "CASHADVANCETRX": "Number of transactions made with cash in advanced",
+    "PURCHASESTRX": "Number of purchase transactions made",
+    "CREDITLIMIT": "Limit of credit card for user",
+    "PAYMENTS": "Amount of payment done by user",
+    "MINIMUM_PAYMENTS": "Minimum amount of payments made by user",
+    "PRCFULLPAYMENT": "Percent of full payment paid by user",
+    "TENURE": "Tenure of credit card service for user"
+}

@@ -1,0 +1,27 @@
+random_state: 234
+
+data_loader:
+  raw_data: "data/raw/CC GENERAL.csv"
+  processed_data: "data/processed/processed_data.csv"
+  metadata: "docs/metadata.json"
+  X_kpca: "data/processed/X_kpca.pk"
+
+
+
+train:
+  n_cluster_range: 17
+  n_cluster: 5
+  model: "models/model.pk"
+  n_impt_feat: 10
+
+report:
+  metrics:
+    hyper_metrics: "reports/metrics/hyperpam_metrics.json"
+    feature_importance: "reports/metrics/feature_importance.json"
+  visual:
+    no_clustersvsinertia: "reports/figures/no_Clusters_vs_Inertia.jpg"
+    no_clustersvssilhouette: "reports/figures/no_Clusters_vs_silhouette.jpg"
+    feature_importance: "reports/figures/feature_importance.jpg"
+    cluster_center: "reports/figures/cluster_center_2D.jpg"
+
+
