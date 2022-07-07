@@ -11,8 +11,9 @@ plt.style.use("seaborn-dark")
 
 
 
-def n_cluster_visual(path: str, y):
-
+def n_cluster_visual(path: str, y, config):
+    
+    n_cluster_range = range(2, config["train"]["n_cluster_range"])
     plt.figure(figsize=(10,8))
     plt.plot(n_cluster_range, y)
     plt.grid(b=True, which="major", axis="both", color="green", linewidth=.5)
@@ -25,33 +26,36 @@ def n_cluster_visual(path: str, y):
     plt.savefig(path);
 
 
+def param_tunning():
+    with open("params.yaml") as file:
+        config = yaml.safe_load(file)
 
-with open("params.yaml") as file:
-    config = yaml.safe_load(file)
+    df = pd.read_csv(config["data_loader"]["processed_data"])
+    X = df.copy().values
 
-df = pd.read_csv(config["data_loader"]["processed_data"])
-X = df.copy().values
+    kpca = KernelPCA(n_components=2,kernel="rbf", random_state=config["random_state"])
+    X_kpca = kpca.fit_transform(X)
 
-kpca = KernelPCA(n_components=2,kernel="rbf", random_state=config["random_state"])
-X_kpca = kpca.fit_transform(X)
+    with open(config["data_loader"]["X_kpca"], "w") as file:
+        pk.dump(X_kpca, file)
 
-with open(config["data_loader"]["X_kpca"], "w") as file:
-    pk.dump(X_kpca, file)
+    inertia = []
+    silhouette_scores = []
+    n_cluster_range = range(2, config["train"]["n_cluster_range"])
 
-inertia = []
-silhouette_scores = []
-n_cluster_range = range(2, config["train"]["n_cluster_range"])
+    for x in n_cluster_range:
+        clus_model = KMeans(n_clusters=x, random_state=config["random_state"])
+        clus_model.fit(X_kpca)
+        inertia.append(clus_model.inertia_)
+        silhouette_scores.append(silhouette_score(df, clus_model.labels_, random_state=config["random_state"]))
 
-for x in n_cluster_range:
-    clus_model = KMeans(n_clusters=x, random_state=config["random_state"])
-    clus_model.fit(X_kpca)
-    inertia.append(clus_model.inertia_)
-    silhouette_scores.append(silhouette_score(df, clus_model.labels_, random_state=config["random_state"]))
+    hyper_metrics = {"inertia":inertia, "silhouette_scores": silhouette_scores}
+    with open(config["report"]["metrics"]["hyper_metrics"], "w") as file:
+        json.dump(hyper_metrics, file)
 
-hyper_metrics = {"inertia":inertia, "silhouette_scores": silhouette_scores}
-with open(config["report"]["metrics"]["hyper_metrics"], "w") as file:
-    json.dump(hyper_metrics, file)
+    n_cluster_visual(config["report"]["visual"]["no_clustersvsinertia"], y=inertia, config=config)
 
-n_cluster_visual(config["report"]["visual"]["no_clustersvsinertia"], y=inertia)
-
-n_cluster_visual(config["report"]["visual"]["no_clustersvssilhouette"], y=silhouette_scores)
+    n_cluster_visual(config["report"]["visual"]["no_clustersvssilhouette"], y=silhouette_scores, config=config)
+    
+if __name__ == "__main__":
+    param_tunning()

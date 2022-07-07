@@ -1,0 +1,19 @@
+schema: '2.0'
+stages:
+  build_feature:
+    cmd: python src/features/build_features.py --path=params.yaml
+    deps:
+    - path: src/features/build_features.py
+      md5: 6244270b4bb03cd70c0e5c37e752003e
+      size: 734
+    params:
+      params.yaml:
+        data_loader:
+          raw_data: data/raw/CC GENERAL.csv
+          processed_data: data/processed/processed_data.csv
+          metadata: docs/metadata.json
+          X_kpca: data/processed/X_kpca.pk
+    outs:
+    - path: data/processed/processed_data.csv
+      md5: 891ec9c44bb840b872302e2c7993d481
+      size: 2973830
