@@ -9,6 +9,8 @@ import pickle as pk
 import matplotlib.pyplot as plt
 plt.style.use("seaborn-dark")
 
+from src.logs import get_logger
+
 
 
 
@@ -31,13 +33,18 @@ def param_tunning(file_path:str):
     with open(file_path) as file:
         config = yaml.safe_load(file)
 
+    logger = get_logger('HYPERPARAMETER TUNNING', log_level=config['log_level'])
+    
+    logger.info('Loading data...')
     df = pd.read_csv(config["data_loader"]["processed_data"])
     X = df.copy().values
+    logger.info('data successfully loaded...')
 
     kpca = KernelPCA(n_components=2,kernel="rbf", random_state=config["random_state"])
     X_kpca = kpca.fit_transform(X)
 
-    with open(config["data_loader"]["X_kpca"], "w") as file:
+    logger.info('dumping 2D array of the data...')
+    with open(config["data_loader"]["X_kpca"], "wb") as file:
         pk.dump(X_kpca, file)
 
     inertia = []
@@ -51,11 +58,14 @@ def param_tunning(file_path:str):
         silhouette_scores.append(silhouette_score(df, clus_model.labels_, random_state=config["random_state"]))
 
     hyper_metrics = {"inertia":inertia, "silhouette_scores": silhouette_scores}
+    logger.info('storing the hyperparameter score using json...')
     with open(config["report"]["metrics"]["hyper_metrics"], "w") as file:
         json.dump(hyper_metrics, file)
 
+    logger.info('plotting the inertia vs n_clusters...')
     n_cluster_visual(config["report"]["visual"]["no_clustersvsinertia"], y=inertia, config=config)
 
+    logger.info('plotting the silhouette score vs n_clusters...')
     n_cluster_visual(config["report"]["visual"]["no_clustersvssilhouette"], y=silhouette_scores, config=config)
     
 if __name__ == "__main__":

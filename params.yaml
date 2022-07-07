@@ -1,5 +1,8 @@
 random_state: 234
 
+
+loglevel: "INFO"
+
 data_loader:
   raw_data: "data/raw/CC GENERAL.csv"
   processed_data: "data/processed/processed_data.csv"
