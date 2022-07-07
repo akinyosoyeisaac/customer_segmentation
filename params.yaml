@@ -1,7 +1,7 @@
 random_state: 234
 
 
-loglevel: "INFO"
+loglevel: INFO
 
 data_loader:
   raw_data: "data/raw/CC GENERAL.csv"
