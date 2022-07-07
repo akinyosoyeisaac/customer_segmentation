@@ -33,7 +33,7 @@ def param_tunning(file_path:str):
     with open(file_path) as file:
         config = yaml.safe_load(file)
 
-    logger = get_logger('HYPERPARAMETER TUNNING', log_level=config['log_level'])
+    logger = get_logger('HYPERPARAMETER TUNNING', log_level=config['loglevel'])
     
     logger.info('Loading data...')
     df = pd.read_csv(config["data_loader"]["processed_data"])
