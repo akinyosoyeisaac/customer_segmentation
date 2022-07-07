@@ -40,6 +40,7 @@ def param_tunning(file_path:str):
     X = df.copy().values
     logger.info('data successfully loaded...')
 
+    logger.info('reducing the data to 2D array using KernelPCA...')
     kpca = KernelPCA(n_components=2,kernel="rbf", random_state=config["random_state"])
     X_kpca = kpca.fit_transform(X)
 

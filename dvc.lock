@@ -17,3 +17,47 @@ stages:
     - path: data/processed/processed_data.csv
       md5: 891ec9c44bb840b872302e2c7993d481
       size: 2973830
+  hyperparameter_tunning:
+    cmd: python src\models\param_tuning.py --path=params.yaml
+    deps:
+    - path: data\processed\processed_data.csv
+      md5: 891ec9c44bb840b872302e2c7993d481
+      size: 2973830
+    - path: src\models\param_tuning.py
+      md5: 15f57de3808fd90675b5bac75cf1c59e
+      size: 2844
+    params:
+      params.yaml:
+        data_loader:
+          raw_data: data/raw/CC GENERAL.csv
+          processed_data: data/processed/processed_data.csv
+          metadata: docs/metadata.json
+          X_kpca: data/processed/X_kpca.pk
+        random_state: 234
+        report:
+          metrics:
+            hyper_metrics: reports/metrics/hyperpam_metrics.json
+            feature_importance: reports/metrics/feature_importance.json
+          visual:
+            no_clustersvsinertia: reports/figures/no_Clusters_vs_Inertia.jpg
+            no_clustersvssilhouette: reports/figures/no_Clusters_vs_silhouette.jpg
+            feature_importance: reports/figures/feature_importance.jpg
+            cluster_center: reports/figures/cluster_center_2D.jpg
+        train:
+          n_cluster_range: 17
+          n_cluster: 5
+          model: models/model.pk
+          n_impt_feat: 10
+    outs:
+    - path: data\processed\X_kpca.pk
+      md5: 1ba9fb5e0828176f342990376f5edecc
+      size: 143362
+    - path: reports\figures\no_Clusters_vs_Inertia.jpg
+      md5: e2742c53d7adc6952332dd5593cc94f9
+      size: 64260
+    - path: reports\figures\no_Clusters_vs_silhouette.jpg
+      md5: 0f7fc5e7e7cd993f90249f3882fd3c70
+      size: 84207
+    - path: reports\metrics\hyperpam_metrics.json
+      md5: f0f00d18bf9d2e10ee5934e3da366427
+      size: 641
